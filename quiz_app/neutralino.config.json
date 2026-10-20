@@ -4,6 +4,7 @@
   "defaultMode": "window",
   "documentRoot": "/resources/",
   "url": "/",
+  "port": 53841,
   "enableServer": true,
   "logging": { "enabled": false },
   "modes": {
