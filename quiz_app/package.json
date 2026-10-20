@@ -1,0 +1,15 @@
+{
+  "name": "quiz-trainer",
+  "version": "1.0.0",
+  "description": "Salesforce 過去問トレーナーのデスクトップアプリ（Neutralinojs）",
+  "scripts": {
+    "build": "cp ../quitz_tool/問題.html resources/index.html && neu update && neu build --release --embed-resources && rm -f dist/*.zip dist/quiz-trainer/*linux* dist/quiz-trainer/*mac*"
+  },
+  "devDependencies": {
+    "@neutralinojs/neu": "^11.8.0"
+  },
+  "overrides": {
+    "uuid": "^9.0.1"
+  },
+  "private": true
+}
