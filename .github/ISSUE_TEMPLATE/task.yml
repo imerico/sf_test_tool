@@ -1,0 +1,20 @@
+name: 作業
+description: 不具合の修正・機能追加・問題データの修正など、通常の作業
+labels: ["task"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: 内容
+      description: 何をするか、なぜ必要か。不具合なら再現手順と、期待する動き・実際の動きも書いてください。
+    validations:
+      required: true
+  - type: textarea
+    id: done
+    attributes:
+      label: 完了条件
+      description: 何ができたら完了か
+      placeholder: |
+        - [ ]
+    validations:
+      required: true

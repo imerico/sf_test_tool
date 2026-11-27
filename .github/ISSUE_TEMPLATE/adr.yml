@@ -1,0 +1,30 @@
+name: 設計の検討（ADR 候補）
+description: 設計上の判断が必要な課題。結論が出たら docs/adr/ に ADR を書く
+labels: ["adr"]
+body:
+  - type: textarea
+    id: context
+    attributes:
+      label: 背景
+      description: なぜ判断が必要になったか。今の状況や制約
+    validations:
+      required: true
+  - type: textarea
+    id: question
+    attributes:
+      label: 決めたいこと
+      description: 何を決めるのか（1〜2 文で）
+    validations:
+      required: true
+  - type: textarea
+    id: options
+    attributes:
+      label: 選択肢
+      description: 考えている案と、それぞれの良い点・悪い点
+      placeholder: |
+        1. 案A
+           - 良い点:
+           - 悪い点:
+        2. 案B
+    validations:
+      required: false
