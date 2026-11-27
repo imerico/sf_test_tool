@@ -1,0 +1,51 @@
+name: checks
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  # ADR のファイル名と番号の重複（PR では main と合わせた状態で確認される）
+  adr-number:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: scripts/check-adr-numbers.sh docs/adr
+
+  # PR の全コミットのメッセージが規約に合っているか
+  commit-message:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - name: コミットメッセージを確認
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          status=0
+          tmp=$(mktemp)
+          for c in $(git rev-list --reverse "$BASE..$HEAD"); do
+            line=$(git log -1 --format='%h %s' "$c")
+            if [ "$(git rev-list --no-walk --count --merges "$c")" -ne 0 ]; then
+              echo "::error::$line : マージコミットは含めないでください（git rebase main で追従してください）"
+              status=1
+              continue
+            fi
+            git log -1 --format=%B "$c" > "$tmp"
+            if scripts/check-commit-msg.sh "$tmp" --ci; then
+              echo "✔ $line"
+            else
+              echo "::error::$line : git rebase -i でメッセージを直してください"
+              status=1
+            fi
+          done
+          exit $status
