@@ -289,6 +289,17 @@
 <div class="toast" id="toast"></div>
 
 <script>
+/* ============ storage fallback（exe 版など window.storage が無い環境用） ============ */
+if(!window.storage){
+  const PREFIX='quiz:';
+  window.storage={
+    async get(key){ const v=localStorage.getItem(PREFIX+key); return v===null? null: {key, value:v}; },
+    async set(key,value){ localStorage.setItem(PREFIX+key, value); return {key, value}; },
+    async delete(key){ localStorage.removeItem(PREFIX+key); return {key, deleted:true}; },
+    async list(prefix=''){ const keys=[]; for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); if(k.startsWith(PREFIX+prefix)) keys.push(k.slice(PREFIX.length)); } return {keys}; }
+  };
+}
+
 /* ============ storage helpers ============ */
 async function sGet(key){
   try{ const r = await window.storage.get(key,false); return r? JSON.parse(r.value): null; }
